@@ -1,0 +1,723 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="rinconModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="clase_producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="nit" />
+          </Key>
+          <Property Name="nit" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="direccion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="detalle_factura">
+          <Key>
+            <PropertyRef Name="factura" />
+            <PropertyRef Name="cantidad" />
+            <PropertyRef Name="producto" />
+            <PropertyRef Name="precio" />
+          </Key>
+          <Property Name="factura" Type="int" Nullable="false" />
+          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="producto" Type="int" Nullable="false" />
+          <Property Name="precio" Type="float" Nullable="false" />
+          <Property Name="total" Type="float" />
+        </EntityType>
+        <EntityType Name="enc_factura">
+          <Key>
+            <PropertyRef Name="no_factura" />
+          </Key>
+          <Property Name="no_factura" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha" Type="date" />
+          <Property Name="cliente" Type="varchar" MaxLength="20" />
+          <Property Name="total_factura" Type="float" />
+          <Property Name="usuario" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="40" />
+          <Property Name="clase" Type="int" />
+          <Property Name="unidad_medidad" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="promociones">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="proveedor">
+          <Key>
+            <PropertyRef Name="nit" />
+          </Key>
+          <Property Name="nit" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="direccion" Type="varchar" MaxLength="50" />
+          <Property Name="clase" Type="int" />
+        </EntityType>
+        <EntityType Name="stock">
+          <Key>
+            <PropertyRef Name="producto" />
+            <PropertyRef Name="fecha_ingreso" />
+            <PropertyRef Name="precio" />
+          </Key>
+          <Property Name="producto" Type="int" Nullable="false" />
+          <Property Name="fecha_ingreso" Type="date" Nullable="false" />
+          <Property Name="precio" Type="float" Nullable="false" />
+          <Property Name="cantidad" Type="int" />
+        </EntityType>
+        <EntityType Name="tipo_transaccion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="tipo_user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="pass" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="tipo" Type="int" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'rincon.dbo.vdetalles' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vdetalles">
+          <Key>
+            <PropertyRef Name="factura" />
+            <PropertyRef Name="cantidad" />
+            <PropertyRef Name="precio" />
+          </Key>
+          <Property Name="factura" Type="int" Nullable="false" />
+          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="producto" Type="varchar" MaxLength="40" />
+          <Property Name="precio" Type="float" Nullable="false" />
+          <Property Name="total" Type="float" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'rincon.dbo.vfacturas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vfacturas">
+          <Key>
+            <PropertyRef Name="no_factura" />
+          </Key>
+          <Property Name="no_factura" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="date" />
+          <Property Name="cliente" Type="varchar" MaxLength="50" />
+          <Property Name="total" Type="float" />
+          <Property Name="usuario" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="fk_detalle_factura">
+          <End Role="enc_factura" Type="Self.enc_factura" Multiplicity="1" />
+          <End Role="detalle_factura" Type="Self.detalle_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="enc_factura">
+              <PropertyRef Name="no_factura" />
+            </Principal>
+            <Dependent Role="detalle_factura">
+              <PropertyRef Name="factura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_detalle_producto">
+          <End Role="producto" Type="Self.producto" Multiplicity="1" />
+          <End Role="detalle_factura" Type="Self.detalle_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="detalle_factura">
+              <PropertyRef Name="producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_enc_cliente">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="enc_factura" Type="Self.enc_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="nit" />
+            </Principal>
+            <Dependent Role="enc_factura">
+              <PropertyRef Name="cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_enc_usuario">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="0..1" />
+          <End Role="enc_factura" Type="Self.enc_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="enc_factura">
+              <PropertyRef Name="usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_producto_clase">
+          <End Role="clase_producto" Type="Self.clase_producto" Multiplicity="0..1" />
+          <End Role="producto" Type="Self.producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clase_producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="producto">
+              <PropertyRef Name="clase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_proveedor_clase">
+          <End Role="clase_producto" Type="Self.clase_producto" Multiplicity="0..1" />
+          <End Role="proveedor" Type="Self.proveedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clase_producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="proveedor">
+              <PropertyRef Name="clase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_stock_producto">
+          <End Role="producto" Type="Self.producto" Multiplicity="1" />
+          <End Role="stock" Type="Self.stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="stock">
+              <PropertyRef Name="producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_user_tipo">
+          <End Role="tipo_user" Type="Self.tipo_user" Multiplicity="0..1" />
+          <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipo_user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usuario">
+              <PropertyRef Name="tipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="rinconModelStoreContainer">
+          <EntitySet Name="clase_producto" EntityType="Self.clase_producto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="detalle_factura" EntityType="Self.detalle_factura" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="enc_factura" EntityType="Self.enc_factura" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="producto" EntityType="Self.producto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="promociones" EntityType="Self.promociones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="proveedor" EntityType="Self.proveedor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="stock" EntityType="Self.stock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipo_transaccion" EntityType="Self.tipo_transaccion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipo_user" EntityType="Self.tipo_user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vdetalles" EntityType="Self.vdetalles" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vdetalles].[factura] AS [factura], 
+    [vdetalles].[cantidad] AS [cantidad], 
+    [vdetalles].[producto] AS [producto], 
+    [vdetalles].[precio] AS [precio], 
+    [vdetalles].[total] AS [total]
+    FROM [dbo].[vdetalles] AS [vdetalles]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vfacturas" EntityType="Self.vfacturas" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vfacturas].[no_factura] AS [no_factura], 
+    [vfacturas].[fecha] AS [fecha], 
+    [vfacturas].[cliente] AS [cliente], 
+    [vfacturas].[total] AS [total], 
+    [vfacturas].[usuario] AS [usuario]
+    FROM [dbo].[vfacturas] AS [vfacturas]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="fk_detalle_factura" Association="Self.fk_detalle_factura">
+            <End Role="enc_factura" EntitySet="enc_factura" />
+            <End Role="detalle_factura" EntitySet="detalle_factura" />
+          </AssociationSet>
+          <AssociationSet Name="fk_detalle_producto" Association="Self.fk_detalle_producto">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="detalle_factura" EntitySet="detalle_factura" />
+          </AssociationSet>
+          <AssociationSet Name="fk_enc_cliente" Association="Self.fk_enc_cliente">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="enc_factura" EntitySet="enc_factura" />
+          </AssociationSet>
+          <AssociationSet Name="fk_enc_usuario" Association="Self.fk_enc_usuario">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="enc_factura" EntitySet="enc_factura" />
+          </AssociationSet>
+          <AssociationSet Name="fk_producto_clase" Association="Self.fk_producto_clase">
+            <End Role="clase_producto" EntitySet="clase_producto" />
+            <End Role="producto" EntitySet="producto" />
+          </AssociationSet>
+          <AssociationSet Name="fk_proveedor_clase" Association="Self.fk_proveedor_clase">
+            <End Role="clase_producto" EntitySet="clase_producto" />
+            <End Role="proveedor" EntitySet="proveedor" />
+          </AssociationSet>
+          <AssociationSet Name="fk_stock_producto" Association="Self.fk_stock_producto">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="stock" EntitySet="stock" />
+          </AssociationSet>
+          <AssociationSet Name="fk_user_tipo" Association="Self.fk_user_tipo">
+            <End Role="tipo_user" EntitySet="tipo_user" />
+            <End Role="usuario" EntitySet="usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="rinconModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="clase_producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="producto" Relationship="Self.fk_producto_clase" FromRole="clase_producto" ToRole="producto" />
+          <NavigationProperty Name="proveedor" Relationship="Self.fk_proveedor_clase" FromRole="clase_producto" ToRole="proveedor" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="nit" />
+          </Key>
+          <Property Name="nit" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="enc_factura" Relationship="Self.fk_enc_cliente" FromRole="cliente" ToRole="enc_factura" />
+        </EntityType>
+        <EntityType Name="detalle_factura">
+          <Key>
+            <PropertyRef Name="factura" />
+            <PropertyRef Name="cantidad" />
+            <PropertyRef Name="producto" />
+            <PropertyRef Name="precio" />
+          </Key>
+          <Property Name="factura" Type="Int32" Nullable="false" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="producto" Type="Int32" Nullable="false" />
+          <Property Name="precio" Type="Double" Nullable="false" />
+          <Property Name="total" Type="Double" />
+          <NavigationProperty Name="enc_factura" Relationship="Self.fk_detalle_factura" FromRole="detalle_factura" ToRole="enc_factura" />
+          <NavigationProperty Name="producto1" Relationship="Self.fk_detalle_producto" FromRole="detalle_factura" ToRole="producto" />
+        </EntityType>
+        <EntityType Name="enc_factura">
+          <Key>
+            <PropertyRef Name="no_factura" />
+          </Key>
+          <Property Name="no_factura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="cliente" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="total_factura" Type="Double" />
+          <Property Name="usuario" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cliente1" Relationship="Self.fk_enc_cliente" FromRole="enc_factura" ToRole="cliente" />
+          <NavigationProperty Name="detalle_factura" Relationship="Self.fk_detalle_factura" FromRole="enc_factura" ToRole="detalle_factura" />
+          <NavigationProperty Name="usuario1" Relationship="Self.fk_enc_usuario" FromRole="enc_factura" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="clase" Type="Int32" />
+          <Property Name="unidad_medidad" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="clase_producto" Relationship="Self.fk_producto_clase" FromRole="producto" ToRole="clase_producto" />
+          <NavigationProperty Name="detalle_factura" Relationship="Self.fk_detalle_producto" FromRole="producto" ToRole="detalle_factura" />
+          <NavigationProperty Name="stock" Relationship="Self.fk_stock_producto" FromRole="producto" ToRole="stock" />
+        </EntityType>
+        <EntityType Name="promociones">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="proveedor">
+          <Key>
+            <PropertyRef Name="nit" />
+          </Key>
+          <Property Name="nit" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="clase" Type="Int32" />
+          <NavigationProperty Name="clase_producto" Relationship="Self.fk_proveedor_clase" FromRole="proveedor" ToRole="clase_producto" />
+        </EntityType>
+        <EntityType Name="stock">
+          <Key>
+            <PropertyRef Name="producto" />
+            <PropertyRef Name="fecha_ingreso" />
+            <PropertyRef Name="precio" />
+          </Key>
+          <Property Name="producto" Type="Int32" Nullable="false" />
+          <Property Name="fecha_ingreso" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="precio" Type="Double" Nullable="false" />
+          <Property Name="cantidad" Type="Int32" />
+          <NavigationProperty Name="producto1" Relationship="Self.fk_stock_producto" FromRole="stock" ToRole="producto" />
+        </EntityType>
+        <EntityType Name="tipo_transaccion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tipo_user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="usuario" Relationship="Self.fk_user_tipo" FromRole="tipo_user" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tipo" Type="Int32" />
+          <NavigationProperty Name="enc_factura" Relationship="Self.fk_enc_usuario" FromRole="usuario" ToRole="enc_factura" />
+          <NavigationProperty Name="tipo_user" Relationship="Self.fk_user_tipo" FromRole="usuario" ToRole="tipo_user" />
+        </EntityType>
+        <Association Name="fk_producto_clase">
+          <End Role="clase_producto" Type="Self.clase_producto" Multiplicity="0..1" />
+          <End Role="producto" Type="Self.producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clase_producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="producto">
+              <PropertyRef Name="clase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_proveedor_clase">
+          <End Role="clase_producto" Type="Self.clase_producto" Multiplicity="0..1" />
+          <End Role="proveedor" Type="Self.proveedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clase_producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="proveedor">
+              <PropertyRef Name="clase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_enc_cliente">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="enc_factura" Type="Self.enc_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="nit" />
+            </Principal>
+            <Dependent Role="enc_factura">
+              <PropertyRef Name="cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_detalle_factura">
+          <End Role="enc_factura" Type="Self.enc_factura" Multiplicity="1" />
+          <End Role="detalle_factura" Type="Self.detalle_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="enc_factura">
+              <PropertyRef Name="no_factura" />
+            </Principal>
+            <Dependent Role="detalle_factura">
+              <PropertyRef Name="factura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_detalle_producto">
+          <End Role="producto" Type="Self.producto" Multiplicity="1" />
+          <End Role="detalle_factura" Type="Self.detalle_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="detalle_factura">
+              <PropertyRef Name="producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_enc_usuario">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="0..1" />
+          <End Role="enc_factura" Type="Self.enc_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="enc_factura">
+              <PropertyRef Name="usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_stock_producto">
+          <End Role="producto" Type="Self.producto" Multiplicity="1" />
+          <End Role="stock" Type="Self.stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="stock">
+              <PropertyRef Name="producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_user_tipo">
+          <End Role="tipo_user" Type="Self.tipo_user" Multiplicity="0..1" />
+          <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipo_user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="usuario">
+              <PropertyRef Name="tipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="rinconEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="clase_producto" EntityType="Self.clase_producto" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" />
+          <EntitySet Name="detalle_factura" EntityType="Self.detalle_factura" />
+          <EntitySet Name="enc_factura" EntityType="Self.enc_factura" />
+          <EntitySet Name="producto" EntityType="Self.producto" />
+          <EntitySet Name="promociones" EntityType="Self.promociones" />
+          <EntitySet Name="proveedor" EntityType="Self.proveedor" />
+          <EntitySet Name="stock" EntityType="Self.stock" />
+          <EntitySet Name="tipo_transaccion" EntityType="Self.tipo_transaccion" />
+          <EntitySet Name="tipo_user" EntityType="Self.tipo_user" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" />
+          <AssociationSet Name="fk_producto_clase" Association="Self.fk_producto_clase">
+            <End Role="clase_producto" EntitySet="clase_producto" />
+            <End Role="producto" EntitySet="producto" />
+          </AssociationSet>
+          <AssociationSet Name="fk_proveedor_clase" Association="Self.fk_proveedor_clase">
+            <End Role="clase_producto" EntitySet="clase_producto" />
+            <End Role="proveedor" EntitySet="proveedor" />
+          </AssociationSet>
+          <AssociationSet Name="fk_enc_cliente" Association="Self.fk_enc_cliente">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="enc_factura" EntitySet="enc_factura" />
+          </AssociationSet>
+          <AssociationSet Name="fk_detalle_factura" Association="Self.fk_detalle_factura">
+            <End Role="enc_factura" EntitySet="enc_factura" />
+            <End Role="detalle_factura" EntitySet="detalle_factura" />
+          </AssociationSet>
+          <AssociationSet Name="fk_detalle_producto" Association="Self.fk_detalle_producto">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="detalle_factura" EntitySet="detalle_factura" />
+          </AssociationSet>
+          <AssociationSet Name="fk_enc_usuario" Association="Self.fk_enc_usuario">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="enc_factura" EntitySet="enc_factura" />
+          </AssociationSet>
+          <AssociationSet Name="fk_stock_producto" Association="Self.fk_stock_producto">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="stock" EntitySet="stock" />
+          </AssociationSet>
+          <AssociationSet Name="fk_user_tipo" Association="Self.fk_user_tipo">
+            <End Role="tipo_user" EntitySet="tipo_user" />
+            <End Role="usuario" EntitySet="usuario" />
+          </AssociationSet>
+          <EntitySet Name="vfacturas" EntityType="rinconModel.vfacturas" />
+          <EntitySet Name="vdetalles" EntityType="rinconModel.vdetalles" />
+        </EntityContainer>
+        <EntityType Name="vfacturas">
+          <Key>
+            <PropertyRef Name="no_factura" />
+          </Key>
+          <Property Name="no_factura" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="cliente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="total" Type="Double" />
+          <Property Name="usuario" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="vdetalles">
+          <Key>
+            <PropertyRef Name="factura" />
+            <PropertyRef Name="cantidad" />
+            <PropertyRef Name="precio" />
+          </Key>
+          <Property Name="factura" Type="Int32" Nullable="false" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="producto" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="precio" Type="Double" Nullable="false" />
+          <Property Name="total" Type="Double" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="rinconModelStoreContainer" CdmEntityContainer="rinconEntities">
+          <EntitySetMapping Name="clase_producto">
+            <EntityTypeMapping TypeName="rinconModel.clase_producto">
+              <MappingFragment StoreEntitySet="clase_producto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cliente">
+            <EntityTypeMapping TypeName="rinconModel.cliente">
+              <MappingFragment StoreEntitySet="cliente">
+                <ScalarProperty Name="nit" ColumnName="nit" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="detalle_factura">
+            <EntityTypeMapping TypeName="rinconModel.detalle_factura">
+              <MappingFragment StoreEntitySet="detalle_factura">
+                <ScalarProperty Name="factura" ColumnName="factura" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="producto" ColumnName="producto" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+                <ScalarProperty Name="total" ColumnName="total" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="enc_factura">
+            <EntityTypeMapping TypeName="rinconModel.enc_factura">
+              <MappingFragment StoreEntitySet="enc_factura">
+                <ScalarProperty Name="no_factura" ColumnName="no_factura" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="cliente" ColumnName="cliente" />
+                <ScalarProperty Name="total_factura" ColumnName="total_factura" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="producto">
+            <EntityTypeMapping TypeName="rinconModel.producto">
+              <MappingFragment StoreEntitySet="producto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="clase" ColumnName="clase" />
+                <ScalarProperty Name="unidad_medidad" ColumnName="unidad_medidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="promociones">
+            <EntityTypeMapping TypeName="rinconModel.promociones">
+              <MappingFragment StoreEntitySet="promociones">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="proveedor">
+            <EntityTypeMapping TypeName="rinconModel.proveedor">
+              <MappingFragment StoreEntitySet="proveedor">
+                <ScalarProperty Name="nit" ColumnName="nit" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="clase" ColumnName="clase" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stock">
+            <EntityTypeMapping TypeName="rinconModel.stock">
+              <MappingFragment StoreEntitySet="stock">
+                <ScalarProperty Name="producto" ColumnName="producto" />
+                <ScalarProperty Name="fecha_ingreso" ColumnName="fecha_ingreso" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipo_transaccion">
+            <EntityTypeMapping TypeName="rinconModel.tipo_transaccion">
+              <MappingFragment StoreEntitySet="tipo_transaccion">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipo_user">
+            <EntityTypeMapping TypeName="rinconModel.tipo_user">
+              <MappingFragment StoreEntitySet="tipo_user">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuario">
+            <EntityTypeMapping TypeName="rinconModel.usuario">
+              <MappingFragment StoreEntitySet="usuario">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="pass" ColumnName="pass" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vfacturas">
+            <EntityTypeMapping TypeName="rinconModel.vfacturas">
+              <MappingFragment StoreEntitySet="vfacturas">
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="cliente" ColumnName="cliente" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="no_factura" ColumnName="no_factura" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vdetalles">
+            <EntityTypeMapping TypeName="rinconModel.vdetalles">
+              <MappingFragment StoreEntitySet="vdetalles">
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+                <ScalarProperty Name="producto" ColumnName="producto" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="factura" ColumnName="factura" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

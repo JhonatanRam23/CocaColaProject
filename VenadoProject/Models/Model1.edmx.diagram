@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="19b5589412a246afa063cd7dfb1ae5ad" Name="Diagram1">
+        <EntityTypeShape EntityType="rinconModel.clase_producto" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="rinconModel.cliente" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="rinconModel.detalle_factura" Width="1.5" PointX="5.25" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="rinconModel.enc_factura" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="rinconModel.producto" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="rinconModel.promociones" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="rinconModel.proveedor" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="rinconModel.stock" Width="1.5" PointX="5.25" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="rinconModel.tipo_transaccion" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="rinconModel.tipo_user" Width="1.5" PointX="1.5" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="rinconModel.usuario" Width="1.5" PointX="0.75" PointY="11" IsExpanded="true" />
+        <AssociationConnector Association="rinconModel.fk_producto_clase" ManuallyRouted="false" />
+        <AssociationConnector Association="rinconModel.fk_proveedor_clase" ManuallyRouted="false" />
+        <AssociationConnector Association="rinconModel.fk_enc_cliente" ManuallyRouted="false" />
+        <AssociationConnector Association="rinconModel.fk_detalle_factura" ManuallyRouted="false" />
+        <AssociationConnector Association="rinconModel.fk_detalle_producto" ManuallyRouted="false" />
+        <AssociationConnector Association="rinconModel.fk_enc_usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="rinconModel.fk_stock_producto" ManuallyRouted="false" />
+        <AssociationConnector Association="rinconModel.fk_user_tipo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="rinconModel.vfacturas" Width="1.5" PointX="7.375" PointY="6.75" />
+        <EntityTypeShape EntityType="rinconModel.vdetalles" Width="1.5" PointX="5.375" PointY="9.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

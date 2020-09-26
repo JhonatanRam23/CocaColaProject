@@ -1,0 +1,27 @@
+﻿@model List<VenadoProject.Models.enc_factura>
+
+@{
+    ViewBag.Title = "Impresion de Factura";
+}
+
+@using (Html.BeginForm("Prueba", "Imprimir", FormMethod.Post))
+{
+    <br />
+    <br />
+    <br />
+    <h2>Exportando factura</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.DropDownList("factura", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+            <br />
+            <div>
+                <input value="Grabar" class="btn btn-primary" type="submit" />
+            </div>
+        </div>
+    </div>
+}

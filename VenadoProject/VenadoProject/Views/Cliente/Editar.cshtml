@@ -1,0 +1,31 @@
+﻿@model VenadoProject.Models.ViewModels.ListCliente
+@{
+    ViewBag.Title = "Edicion de Ciente";
+}
+
+<h2>Editar Nuevo Cliente</h2>
+<h1>@ViewBag.nit</h1>
+
+@using (Html.BeginForm("Editar", "Cliente", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-12">            
+            @Html.HiddenFor(d=>d.nit)
+            <div>
+                @Html.LabelFor(d => d.nombre)
+                @Html.TextBoxFor(d => d.nombre, "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.nombre, null, new { @class = "danger" })
+            </div>
+
+            <div>
+                @Html.LabelFor(d => d.direccion)
+                @Html.TextBoxFor(d => d.direccion, "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.direccion, null, new { @class = "danger" })
+            </div>
+
+            <div>
+                <input value="Grabar" class="btn btn-primary" type="submit" />
+            </div>
+        </div>
+    </div>
+}

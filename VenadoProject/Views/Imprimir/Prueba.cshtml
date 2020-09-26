@@ -1,0 +1,69 @@
+﻿@model VenadoProject.Models.ViewModels.ListFactura
+
+@{
+    ViewBag.Title = "Facturacion";
+    var elemnto = Model;
+}
+
+<br />
+<br />
+<br />
+<br />
+
+<h2>FACTURA</h2>
+<h1>@ViewBag.factura</h1>
+
+<h1>
+    Numero de Factura:
+    @elemnto.nofactura
+</h1>
+
+<h1>
+    Fecha:
+    @elemnto.fecha
+</h1>
+
+<h1>
+    Nit Cliente:
+    @elemnto.cliente
+</h1>
+
+<h1>
+    Total de Factura: Q.
+    @elemnto.total
+</h1>
+
+<h1>
+    Cajero
+    @elemnto.usuario
+</h1>
+
+
+<table class="table">
+    <tr>
+        <th>Cantidad</th>
+        <th>Producto</th>
+        <th>Precio</th>
+        <th>Total</th>
+    </tr>
+    @foreach (var oElemento in elemnto.ListaArticulos)
+    {
+        <tr>
+            <td>@oElemento.cantidad</td>
+            <td>@oElemento.producto</td>
+            <td>@oElemento.precio</td>
+            <td>@oElemento.total</td>
+        </tr>
+    }
+
+</table>
+
+@if (ViewBag.imageBytes != null)
+{
+    <img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(ViewBag.imageBytes))" width="250" height="250" />
+}
+
+
+
+
+

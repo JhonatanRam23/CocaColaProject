@@ -1,0 +1,34 @@
+﻿@model List<VenadoProject.Models.ViewModels.ListCliente>
+@{
+    ViewBag.Title = "Clientes";
+}
+
+<h2>Listado de Clientes</h2>
+
+<div class="row">
+    <a href="~/Cliente/Nuevo" class="btn btn-primary">Nuevo</a>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <tr>
+                <th>Nit</th>
+                <th>Nombre</th>
+                <th>Direccion</th>
+                <th>Opciones</th>
+            </tr>
+            @foreach(var oElemento in Model)
+            {
+            <tr>
+                <td>@oElemento.nit</td>
+                <td>@oElemento.nombre</td>
+                <td>@oElemento.direccion</td>
+                <td>
+                    <a class="btn btn-default" href="~/Cliente/Editar/?nit=@oElemento.nit">Editar</a>                                    
+                </td>
+            </tr>
+            }
+        </table>
+    </div>
+</div>
+
